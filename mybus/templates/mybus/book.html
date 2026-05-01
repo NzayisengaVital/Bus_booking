@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Book Bus</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <style>
+        ul li:hover {
+            text-decoration: underline white;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{% static 'images/logo.png' %}" width="40" height="40" class="me-2">
+                System ya Bus
+            </a>
+
+            <!-- Toggle button (mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item d-flex align-items-center me-5">
+                        <span class="nav-link disabled">
+                            <h3 style="color: white;">Muraho🙋‍♂️, {{ user.username }}</h3>
+                        </span>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'home'%}" class="nav-link text-success">Ahabanza</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'about'%}">Tumenye</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="contact">Telephone</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'designer'%}">Uwayikoze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'logout' %}">Sohoka</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Injira</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Iyandikishe</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+
+            <h2 class="text-center mb-4">Ibyerekeye Bus yawe</h2>
+
+            <ul class="list-group mb-4">
+                <li class="list-group-item"><strong>Bus:</strong> {{ bus.busname }}</li>
+                <li class="list-group-item"><strong>Aho iva:</strong> {{ bus.from_location }}</li>
+                <li class="list-group-item"><strong>Aho ijya:</strong> {{ bus.to_location }}</li>
+                <li class="list-group-item"><strong>Igiciro:</strong> {{ bus.price }} Rwf</li>
+                <li class="list-group-item"><strong>Igihe:</strong> {{ bus.time }}</li>
+            </ul>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Hitamo igihe cyo kugenda⌚</label>
+                    <input type="date" name="date" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Hitamo uburyo bwo kwishyura💲</label>
+                    <select name="payment_method" class="form-select">
+                        <option value="momo">Mobile Money</option>
+                        <option value="card">Ikarita</option>
+                    </select>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        Emeza kubika bus
+                    </button>
+                </div>
+
+            </form>
+        </div>
+        <a href="{%url 'home'%}"><button class="btn btn-danger">Subira ahabanza</button></a>
+    </div>
+    </div>
+
+    </div>
+    <footer>
+        <p style="margin-bottom: 5px;">@Arlight reserved Yakozwe by Nzayisenga Vital</p>
+    </footer>
+</body>
+
+</html>

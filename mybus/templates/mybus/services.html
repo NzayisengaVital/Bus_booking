@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Services</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+            <h2 class="text-center mb-4">Hitamo aho uherereye 📍</h2>
+
+            <div class="row g-3">
+
+                <!-- Province -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Intara</label>
+                    <select id="province" class="form-select">
+                        <option value="">Hitamo intara</option>
+                        {% for province in provinces %}
+                        <option value="{{ province.id }}">{{ province.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- District -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Akarere</label>
+                    <select id="district" class="form-select">
+                        <option value="">Hitamo akarere</option>
+                    </select>
+                </div>
+
+                <!-- Sector -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Umurenge</label>
+                    <select id="sector" class="form-select">
+                        <option value="">Hitamo umurenge</option>
+                    </select>
+                </div>
+
+                <!-- Cell -->
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Akagari</label>
+                    <select id="cell" class="form-select">
+                        <option value="">Hitamo akagari</option>
+                    </select>
+                </div>
+
+                <!-- Village -->
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Umudugudu</label>
+                    <select id="village" class="form-select">
+                        <option value="">Hitamo Umudugudu</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Button -->
+            <div class="text-center mt-4">
+                <a href="{%url 'search_bus'%}">
+                    <button class="btn btn-primary px-5">Emeza amerekezo</button></a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        const province = document.getElementById("province");
+        const district = document.getElementById("district");
+        const sector = document.getElementById("sector");
+        const cell = document.getElementById("cell");
+        const village = document.getElementById("village");
+
+        // Province → District
+        province.addEventListener("change", function () {
+            fetch(`/ajax/load-districts/?province_id=${this.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    district.innerHTML = '<option value="">Select District</option>';
+                    sector.innerHTML = '<option value="">Select Sector</option>';
+                    cell.innerHTML = '<option value="">Select Cell</option>';
+                    village.innerHTML = '<option value="">Select Village</option>';
+
+                    data.forEach(item => {
+                        district.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        });
+
+        // District → Sector
+        district.addEventListener("change", function () {
+            fetch(`/ajax/load-sectors/?district_id=${this.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    sector.innerHTML = '<option value="">Select Sector</option>';
+                    cell.innerHTML = '<option value="">Select Cell</option>';
+                    village.innerHTML = '<option value="">Select Village</option>';
+
+                    data.forEach(item => {
+                        sector.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        });
+
+        // Sector → Cell
+        sector.addEventListener("change", function () {
+            fetch(`/ajax/load-cells/?sector_id=${this.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    cell.innerHTML = '<option value="">Select Cell</option>';
+                    village.innerHTML = '<option value="">Select Village</option>';
+
+                    data.forEach(item => {
+                        cell.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        });
+
+        // Cell → Village
+        cell.addEventListener("change", function () {
+            fetch(`/ajax/load-villages/?cell_id=${this.value}`)
+                .then(res => res.json())
+                .then(data => {
+                    village.innerHTML = '<option value="">Select Village</option>';
+
+                    data.forEach(item => {
+                        village.innerHTML += `<option value="${item.id}">${item.name}</option>`;
+                    });
+                });
+        });
+    </script>
+
+</body>
+
+</html>

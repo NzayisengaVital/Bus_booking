@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .booked_message {
+            text-align: center;
+            font-size: 1.5rem;
+            color: green;
+            padding: 10px;
+        }
+
+        ul li:hover {
+            text-decoration: underline white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{% static 'images/logo.png' %}" width="40" height="40" class="me-2">
+                <h3 class="title" id="title">System yo gutega Bus</h3>
+
+            </a>
+
+            <!-- Toggle button (mobile) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item d-flex align-items-center me-5">
+                        <span class="nav-link disabled">
+                            <h3 style="color: white;" id="title">Muraho🙋‍♂️, {{ user.username }}</h3>
+
+                        </span>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'home'%}" class="nav-link text-success">Ahabanza</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'about'%}">ibitwerekeyeho</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'contact'%}">Telephone</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="designer">Uwayikoze</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{% url 'logout' %}">Sohoka</a>
+                    </li>
+
+
+
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Injira</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Iyandikishe</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container text-center mt-5">
+        <h1 class="fw-bold">Murakaza neza kuri system yo guteka bus online</h1>
+        <p class="text-muted fs-5">Bika Bus yawe vuba kandi byoroshye</p>
+
+        {% if not user.is_authenticated %}
+        <div class="mt-4">
+            <a href="{% url 'login' %}" class="btn btn-primary me-2">Injira</a>
+            <a href="{% url 'register' %}" class="btn btn-success">Iyandikishe</a>
+        </div>
+        {% else %}
+        <div class="mt-4">
+            <a href="{% url 'search_bus' %}" class="btn btn-primary">Shaka bus</a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="booked_message">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <h3 class="mymessage">{{ message }}</h3>
+            <p> {{token}} </p>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+    <!--my logo image-->
+    <div class="container">
+        <img src=" {% static 'images/logo.png' %} " alt="My Logo" width="600px" height="255px">
+    </div>
+
+
+
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <footer>
+        <p style="margin-bottom: 5px;">@Arlight reserved Yakozwe na Nzayisenga Vital</p>
+    </footer>
+</body>
+
+</html>

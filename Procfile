@@ -1,0 +1,1 @@
+web: gunicorn Busbooking.wsgi:application
